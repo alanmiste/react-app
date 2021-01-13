@@ -19,8 +19,11 @@ function Footer(props) { //the footer is a child from APP.jsx
       <div>
         Localtext is: {props.text} {/*the getter from the parent component **/}
       </div>
+
+      
+      {/* react loops need a unique key to be more performant*/}
       {props.users.map(user => (
-        <div>{user.name}</div>
+        <div key={user.name}>{user.name}</div> 
       ))}
 
     </footer>

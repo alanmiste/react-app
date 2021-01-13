@@ -1,4 +1,4 @@
-import { useState } from "react" // getting react and state helper function
+import { useState, useEffect } from "react" // getting react and state helper function
 import logo from './logo.svg'; // we get a dynamic logo
 import './App.css';
 import Nav from "./Nav"
@@ -10,13 +10,19 @@ function App() { // component based (App = Main component)
   const salutaion = "Alan"
   const users = [{ name: "Pol", age: "30" }, { name: "Pal", age: "31" }, { name: "Pil", age: "32" }, { name: "Pyl", age: "33" }, { name: "Pxl", age: "34" }]
   const [text, settext] = useState("")
+  useEffect(() => {
+    console.log("I just run once")
+  }, []) // This effect just runs on page load
+  useEffect(() => {
+    console.log("I am depending on text")
+  }, [text]) // This useEffect effect is depeiding on the text-state variable
   console.log(text);
 
   // filter users fefore rendering it - if there is a search string
   const filteredUsers = users.filter(user => user.name.includes(text));
   return ( // JSX = react html template style virtual DOM
     <div className="App">
-      <Nav myname={salutaion}/>{/* pass props down to child component (Nav) **/}
+      <Nav myname={salutaion} />{/* pass props down to child component (Nav) **/}
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />{/* display dynamic image source **/}
         <p>
@@ -43,9 +49,9 @@ function App() { // component based (App = Main component)
         >
           Display thw dainamic value {number}
         </a>
-        name : <code>{name}</code> 
+        name : <code>{name}</code>
       </header>
-      <Footer users={filteredUsers} text={text} settext={settext}/>
+      <Footer users={filteredUsers} text={text} settext={settext} />
     </div>
   );
 }
