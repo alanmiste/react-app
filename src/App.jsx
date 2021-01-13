@@ -1,14 +1,24 @@
-import React, { useState } from "react"
-import logo from './logo.svg';
+import { useState } from "react" // getting react and state helper function
+import logo from './logo.svg'; // we get a dynamic logo
 import './App.css';
+import Nav from "./Nav"
+import Footer from "./Footer"
 
-function App() {
+function App() { // component based (App = Main component)
   const [number, setnumber] = useState(0) // getter and setter - using the state hook to create a dynamic variable
   const [name, setname] = useState("") // getter and setter for name variable
-  return (
+  const salutaion = "Alan"
+  const users = [{ name: "Pol", age: "30" }, { name: "Pal", age: "31" }, { name: "Pil", age: "32" }, { name: "Pyl", age: "33" }, { name: "Pxl", age: "34" }]
+  const [text, settext] = useState("")
+  console.log(text);
+
+  // filter users fefore rendering it - if there is a search string
+  const filteredUsers = users.filter(user => user.name.includes(text));
+  return ( // JSX = react html template style virtual DOM
     <div className="App">
+      <Nav myname={salutaion}/>{/* pass props down to child component (Nav) **/}
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src={logo} className="App-logo" alt="logo" />{/* display dynamic image source **/}
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
@@ -22,13 +32,10 @@ function App() {
                 return response.json()
               }) //then is awating the promisse. parse the response in JSON.
               .then(json => {
-                console.log(json.name)
-                console.log(json.username)
                 setname(json.username) // setter function of the react state
               }).catch(e => {
                 console.log(e)
               })
-            console.log(number)
           }} //increment the number on click on the link
           //href="https://reactjs.org"
           //target="_blank"
@@ -36,8 +43,9 @@ function App() {
         >
           Display thw dainamic value {number}
         </a>
-        name : <code>{name}</code>
+        name : <code>{name}</code> 
       </header>
+      <Footer users={filteredUsers} text={text} settext={settext}/>
     </div>
   );
 }
