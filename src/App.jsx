@@ -10,8 +10,26 @@ function App() { // component based (App = Main component)
   const salutaion = "Alan"
   const users = [{ name: "Pol", age: "30" }, { name: "Pal", age: "31" }, { name: "Pil", age: "32" }, { name: "Pyl", age: "33" }, { name: "Pxl", age: "34" }]
   const [text, settext] = useState("")
+  const [todos, settodos] = useState([])
+
   useEffect(() => {
     console.log("I just run once")
+
+    //get "todos" from json placeholder
+    //put the "todos" also in a state variable instead of a local variable
+    //render the fetched "todos" instead of the static "todos"
+    fetch(`https://jsonplaceholder.typicode.com/todos`) // simple GET request
+      //start then()
+      .then(response => {
+        return response.json()
+      }) //then is awating the promisse. parse the response in JSON.
+      .then(json => {
+        settodos(json) // setter function of the react state
+        console.log(json)
+      }).catch(e => {
+        console.log(e)
+      })
+
   }, []) // This effect just runs on page load
   useEffect(() => {
     console.log("I am depending on text")
@@ -20,6 +38,8 @@ function App() { // component based (App = Main component)
 
   // filter users fefore rendering it - if there is a search string
   const filteredUsers = users.filter(user => user.name.includes(text));
+  console.log("OUTSIDE");
+  console.log(todos[3]);
   return ( // JSX = react html template style virtual DOM
     <div className="App">
       <Nav myname={salutaion} />{/* pass props down to child component (Nav) **/}
@@ -51,8 +71,61 @@ function App() { // component based (App = Main component)
         </a>
         name : <code>{name}</code>
       </header>
-      props drilling
-      <Footer users={filteredUsers} text={text} settext={settext} logo={logo}/> 
+      <main>
+        <div>
+          <label htmlhtmlFor="search">Search</label>
+          <input
+            id="search"
+            onChange={(event => { // listen for onchange event in react style
+              settext(event.target.value) // using the setter from the parent component
+            })}
+          />
+
+        </div>
+        <div>
+          Localtext is: {text} {/*the getter from the parent component **/}
+        </div>
+
+
+        {/* react loops need a unique key to be more performant*/}
+        {users.map(user => (
+          <div key={user.name}>{user.name}</div>
+        ))}
+
+        conditional rendering
+        <div className="container">
+          {todos.map((localTodo, index) => ( // state list which is trigger re-render
+            <div key={index}>
+              {/* key is needed for react to run loop operations more performant. Use index or other unique value */}
+              <div className={"form-check"}>
+                <input
+                  className="form-check-input" // bootstrap stuff 
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                  defaultChecked={localTodo.completed ? true : false} // check if the todo in the state is completed and render the checkbox
+                  onChange={(event => { // WHEN CHECKBOX IS RECEIVING ONCHANGE EVENT
+                    let index = todos.findIndex(todoToFind => todoToFind.id === localTodo.id)// find the position of the clicked checkbox in the list  - because we want to alter the list (its our state)
+                    localTodo.completed = !localTodo.completed // flip the value in the js variable in the Changed element (not the element in the original list yet)
+                    todos[index] = localTodo // move the updated onchange element in the original list
+                    settodos(todos) // upodate the state with the new list 
+                  })}
+                />
+                <label className="form-check-label" htmlFor="flexCheckDefault">
+                  {localTodo.title}
+                </label>
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+
+      <Footer
+        users={filteredUsers}
+        text={text}
+        settext={settext}
+        logo={logo}
+      />
     </div>
   );
 }
