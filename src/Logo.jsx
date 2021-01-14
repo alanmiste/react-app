@@ -1,9 +1,7 @@
-import logo from './logo.svg'; // we get a dynamic logo
-
-function Logo() { // component
+function Logo(props) { // component
 
     return ( // JSX = react html template style virtual DOM
-        <img src={logo} alt="logo" />
+        <img src={props.logo} alt="logo" />
     );
 }
 

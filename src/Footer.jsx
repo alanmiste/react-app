@@ -5,7 +5,7 @@ function Footer(props) { //the footer is a child from APP.jsx
   return ( // JSX = react html template style virtual DOM
     <footer>
       Footer
-      <Logo /> {/* Child from footer - the footer is a child from APP.jsx */}
+      <Logo logo={props.logo} /> {/* Child from footer - the footer is a child from APP.jsx */}
       <div>
         <label htmlFor="search">Search</label>
         <input

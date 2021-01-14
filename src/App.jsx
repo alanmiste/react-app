@@ -51,7 +51,8 @@ function App() { // component based (App = Main component)
         </a>
         name : <code>{name}</code>
       </header>
-      <Footer users={filteredUsers} text={text} settext={settext} />
+      props drilling
+      <Footer users={filteredUsers} text={text} settext={settext} logo={logo}/> 
     </div>
   );
 }
