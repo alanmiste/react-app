@@ -7,14 +7,12 @@ import Footer from "./Footer"
 function App() { // component based (App = Main component)
   const [number, setnumber] = useState(0) // getter and setter - using the state hook to create a dynamic variable
   const [name, setname] = useState("") // getter and setter for name variable
-  const salutaion = "Alan"
+  const salutaion = "Alan" // undynamic value which doesnt trigger re-renders
   const users = [{ name: "Pol", age: "30" }, { name: "Pal", age: "31" }, { name: "Pil", age: "32" }, { name: "Pyl", age: "33" }, { name: "Pxl", age: "34" }]
-  const [text, settext] = useState("")
-  const [todos, settodos] = useState([])
+  const [text, settext] = useState("Hello") // Initialize state with start value
+  const [todos, settodos] = useState([]) // Initialize as empty array - bc it will be an aray later
 
   useEffect(() => {
-    console.log("I just run once")
-
     //get "todos" from json placeholder
     //put the "todos" also in a state variable instead of a local variable
     //render the fetched "todos" instead of the static "todos"
@@ -25,7 +23,6 @@ function App() { // component based (App = Main component)
       }) //then is awating the promisse. parse the response in JSON.
       .then(json => {
         settodos(json) // setter function of the react state
-        console.log(json)
       }).catch(e => {
         console.log(e)
       })
@@ -34,12 +31,9 @@ function App() { // component based (App = Main component)
   useEffect(() => {
     console.log("I am depending on text")
   }, [text]) // This useEffect effect is depeiding on the text-state variable
-  console.log(text);
 
   // filter users fefore rendering it - if there is a search string
   const filteredUsers = users.filter(user => user.name.includes(text));
-  console.log("OUTSIDE");
-  console.log(todos[3]);
   return ( // JSX = react html template style virtual DOM
     <div className="App">
       <Nav myname={salutaion} />{/* pass props down to child component (Nav) **/}
@@ -67,17 +61,28 @@ function App() { // component based (App = Main component)
           //target="_blank"
           rel="noopener noreferrer"
         >
-          Display thw dainamic value {number}
+          Display thw dainamic value {number} 
         </a>
         name : <code>{name}</code>
       </header>
       <main>
         <div>
           <label htmlhtmlFor="search">Search</label>
-          <input
-            id="search"
+          <input // UNCONTROLLED COMPONENT - it just writes to the state, but has no value from the state
+            id="search" // 
             onChange={(event => { // listen for onchange event in react style
               settext(event.target.value) // using the setter from the parent component
+            })}
+          />
+
+        </div>
+        <div>
+          <label htmlhtmlFor="search">Test bind react contorlled components</label>
+          <input // CONTROLLED REACT COMPONENT
+            id="test"
+            value={text} // this makes it to a controlled component - instantly after state change read that state variable
+            onChange={(event => { // this makes it to a controlled component -  listen for onchange event in react style
+              settext(event.target.value) // set the state on change event
             })}
           />
 
