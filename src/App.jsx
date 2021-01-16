@@ -3,6 +3,7 @@ import logo from './logo.svg'; // we get a dynamic logo
 import './App.css';
 import Nav from "./Nav"
 import Footer from "./Footer"
+import Checkbox from "./Checkbox"
 
 function App() { // component based (App = Main component)
   const [number, setnumber] = useState(0) // getter and setter - using the state hook to create a dynamic variable
@@ -61,13 +62,13 @@ function App() { // component based (App = Main component)
           //target="_blank"
           rel="noopener noreferrer"
         >
-          Display thw dainamic value {number} 
+          Display thw dainamic value {number}
         </a>
         name : <code>{name}</code>
       </header>
       <main>
         <div>
-          <label htmlhtmlFor="search">Search</label>
+          <label htmlFor="search">Search</label>
           <input // UNCONTROLLED COMPONENT - it just writes to the state, but has no value from the state
             id="search" // 
             onChange={(event => { // listen for onchange event in react style
@@ -77,7 +78,7 @@ function App() { // component based (App = Main component)
 
         </div>
         <div>
-          <label htmlhtmlFor="search">Test bind react contorlled components</label>
+          <label htmlFor="search">Test bind react contorlled components</label>
           <input // CONTROLLED REACT COMPONENT
             id="test"
             value={text} // this makes it to a controlled component - instantly after state change read that state variable
@@ -100,27 +101,12 @@ function App() { // component based (App = Main component)
         conditional rendering
         <div className="container">
           {todos.map((localTodo, index) => ( // state list which is trigger re-render
-            <div key={index}>
-              {/* key is needed for react to run loop operations more performant. Use index or other unique value */}
-              <div className={"form-check"}>
-                <input
-                  className="form-check-input" // bootstrap stuff 
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                  defaultChecked={localTodo.completed ? true : false} // check if the todo in the state is completed and render the checkbox
-                  onChange={(event => { // WHEN CHECKBOX IS RECEIVING ONCHANGE EVENT
-                    let index = todos.findIndex(todoToFind => todoToFind.id === localTodo.id)// find the position of the clicked checkbox in the list  - because we want to alter the list (its our state)
-                    localTodo.completed = !localTodo.completed // flip the value in the js variable in the Changed element (not the element in the original list yet)
-                    todos[index] = localTodo // move the updated onchange element in the original list
-                    settodos(todos) // upodate the state with the new list 
-                  })}
-                />
-                <label className="form-check-label" htmlFor="flexCheckDefault">
-                  {localTodo.title}
-                </label>
-              </div>
-            </div>
+            <Checkbox
+              localTodo={localTodo}
+              key={index}
+              todos={todos}
+              settodos={settodos}
+            />
           ))}
         </div>
       </main>
